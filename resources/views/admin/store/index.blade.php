@@ -40,7 +40,7 @@
             vertical-align: middle;
         }
     </style>
-   
+
 @endsection
 @section('content')
 
@@ -126,7 +126,7 @@
         </div>
     </div>
 
-                
+
 @endsection
 
 @section('modals')
@@ -158,12 +158,12 @@
 
 
                                 <input type="hidden" id="promoId" value="1">
-                                
+
                                 <div class="mb-3">
                                     <label for="user" class="form-label">Nombre del premio: </label>
                                     <input type="text" class="form-control" id="addAwardName" name="addAwardName" >
                                 </div>
-                                
+
                                 <div class="mb-3">
                                     {{-- <label for="user" class="form-label">Descripcion: </label> --}}
                                     <div class="form-floating">
@@ -173,7 +173,7 @@
                                 </div>
                                 <div class="row justify-content-center">
                                     <div class="col-md-4">
-    
+
                                         <div class="mb-3">
                                             <label for="user" class="form-label">Stock: </label>
                                             {{-- <input type="number" class="form-control" id="addAwardStock" name="addAwardStock" > --}}
@@ -191,7 +191,7 @@
                                         <div id="emailHelp" class="form-text">los puntos no pueden llevar decimales.</div>
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </form>
@@ -204,7 +204,7 @@
         </div>
     </div>
 
-    
+
     <!-- Modal Details Awrads -->
     <div class="modal fade" id="viewDetailsAwards" tabindex="-1" aria-labelledby="exampleModalPromo" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -251,7 +251,7 @@
 
                                 <div class="row justify-content-center">
                                     <div class="col-md-4">
-    
+
                                         <div class="mb-3">
                                             <label for="updateAwardStock" class="form-label">Stock: </label>
                                             <div class="wrapper">
@@ -288,12 +288,12 @@
 
 @section('js')
     <script>
-        
- 
+
+
    </script>
 
     {{-- <script src="{{asset('js/image-zoom.js')}}" type="text/javascript"></script> --}}
    <script src="{{ asset('js/store.js') }}" type="text/javascript"></script>
-   
+
 
 @endsection

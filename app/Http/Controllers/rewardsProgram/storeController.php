@@ -22,7 +22,7 @@ class storeController extends Controller
     protected $emailController;
     protected $ordersController;
     public function __construct( routeGlobal $routeGlobal, emailController $emailController, ordersController $ordersController)
-    { 
+    {
         $this->date = $date = Carbon::now(new \DateTimeZone('AMERICA/Monterrey'));
         $this->routeGlobal = $routeGlobal->index();
         $this->emailController = $emailController;
@@ -36,9 +36,9 @@ class storeController extends Controller
             $awards = $this->writeAwardTable('nonUpdate');
             // dd($awards);
 
-            
+
             return view('admin.store.index',['awards' => $awards, 'routeGlobal' => $this->routeGlobal]);
-            
+
         } catch (\Throwable $th) {
             //throw $th;
             dd($th);
@@ -54,10 +54,10 @@ class storeController extends Controller
             ->where('id',$request->promoId)
             ->first();
 
-          
+
             $description = $request->descriptionAward;
             $name = $request->nameAward;
-            
+
             if($request->image){
                 $nameImage = str_replace(' ', '', $name);
                 $data = explode( ',', $request->image );
@@ -69,7 +69,7 @@ class storeController extends Controller
                 }
             }
 
-           
+
             DB::table('awards')
             ->insert([
                 'promo_id' => $promo->id,
@@ -79,12 +79,12 @@ class storeController extends Controller
                 'price' => $request->addAwardPrice,
                 'redeem' => 0,
                 'stock' => $request->stockAward,
-                'status_id' => 26,
+                'status_id' => $request->stockAward > 0 ? 26 : 27,
                 'created_at' => $this->date,
                 'updated_at' => $this->date,
             ]);
 
-            $tableAwards = $this->writeAwardTable(); 
+            $tableAwards = $this->writeAwardTable();
 
             return [
                 'result' => 'ok',
@@ -109,9 +109,9 @@ class storeController extends Controller
             ->update([
                 'status_id' => 27
             ]);
-    
+
             $tableAwards = $this->writeAwardTable();
-    
+
             return [
                 'result' => 'ok',
                 'table' => $tableAwards,
@@ -122,7 +122,7 @@ class storeController extends Controller
             ];
         }
 
-        
+
     }
 
     public function storeUpdateProduct(Request $request){
@@ -167,10 +167,11 @@ class storeController extends Controller
                 'stock' => $request->stock,
                 'price' => $request->price,
                 'updated_at' => $this->date,
+                'status_id' => $request->stock > 0 ? 26 : 27,
             ]);
 
-            
-            $tableAwards = $this->writeAwardTable(); 
+
+            $tableAwards = $this->writeAwardTable();
 
             return [
                 'result' => 'ok',
@@ -242,13 +243,13 @@ class storeController extends Controller
             if ( !$update ) {
                 # code...
                 $tableAwards = "";
-        
+
                 foreach ($awards as $key => $award) {
                     $textClass = 'text-danger';
                     if ( $award->statusId == 26 ){
                         $textClass = 'text-success';
                     }
-        
+
                     $tableAwards = $tableAwards ."<tr>
                         <td scope='row' style='width: 20%;'>
                         <img src='".$this->routeGlobal.'/'.$award->image."' style='width: 100px;' alt='$award->awardName' />
@@ -259,7 +260,7 @@ class storeController extends Controller
                         <td class='$textClass'>$award->statusName</td>
                         <td>
                             <button type='button' data-bs-toggle='modal' data-bs-target='#viewDetailsAwards' onclick='getDetailsAwards($award->awardId)' class='btn btn-success'><i class='fas fa-eye me-2'></i>Ver detalles</button>
-        
+
                             <button type='button' class='btn btn-danger' onclick='deleteAward($award->awardId)' >
                                 <i class='fas fa-trash me-2'></i>Borrar premio
                             </button>
@@ -310,7 +311,7 @@ class storeController extends Controller
             if($product_id == 3){
                 $validExistOrder = $this->validOrderExist($user->id, $product_id);
             }
-    
+
             return [
                 // 'orderP' => $orderP,
                 'product' => $product,
@@ -357,12 +358,12 @@ class storeController extends Controller
                         'created_at' => $this->date,
                         'updated_at' => $this->date,
                     ]);
-    
+
                     $order = DB::table('orders')
                     ->where('user_id', $wallet->user_id)
                     ->orderBy('id', 'DESC')
                     ->first();
-    
+
                     DB::table('order_products')
                     ->insert([
                         'price' => $product->price,
@@ -395,7 +396,7 @@ class storeController extends Controller
                             'cp' => $request->address['zip'],
                         ]);
                     }
-    
+
                     DB::table('awards')
                     ->where('awards.id', $product->id)
                     ->update([
@@ -461,7 +462,7 @@ class storeController extends Controller
             }else{
                 $result = " Aun no tienes el saldo suficiente para poder canjear este producto.";
             }
-    
+
             return [
                 'result' => $result
             ];
@@ -495,7 +496,7 @@ class storeController extends Controller
         }
 
         return false;
-        
+
     }
 
 }
